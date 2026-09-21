@@ -7,7 +7,6 @@ Utilitários para autenticação com Firebase Authentication.
 import streamlit as st
 import firebase_admin
 from firebase_admin import auth, credentials
-import re
 
 
 def registrar_usuario(email: str, senha: str):
@@ -110,9 +109,32 @@ def listar_usuarios():
 
 
 def validar_email(email: str) -> bool:
-    """Valida formato de email"""
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return re.match(pattern, email) is not None
+    """Valida formato de email - simples"""
+    # Validação básica: Tem @ e tem um ponto após o @
+    if not email:
+        return False
+    
+    email = email.strip()
+    
+    # Verificar @ e extensão
+    if '@' not in email:
+        return False
+    
+    local, domain = email.rsplit('@', 1)
+    
+    # Local não pode ser vazio
+    if not local:
+        return False
+    
+    # Domain deve ter um ponto
+    if '.' not in domain:
+        return False
+    
+    # Não pode ter espaços
+    if ' ' in email:
+        return False
+    
+    return True
 
 
 def validar_senha(senha: str) -> bool:
