@@ -12,6 +12,7 @@ Este arquivo é o Front Controller: inicializa Firebase, manage autenticação e
 """
 
 import streamlit as st
+import os
 
 from controllers import auth_controller, session_controller
 from views import auth_view, layout_view
@@ -19,6 +20,10 @@ from views.components import inject_css
 from utils.firebase_utils import init_firestore
 
 st.set_page_config(page_title="SGA — Sistema de Gestão de Ambientes", page_icon="🏫", layout="wide")
+
+# Definir caminho correto do projeto (onde app.py está)
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+os.chdir(PROJECT_ROOT)  # Mudar diretório de trabalho para o projeto
 
 # Inicializa Firebase Firestore
 if 'firestore_db' not in st.session_state:
